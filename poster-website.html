@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vegetation Vibrancy Research Poster</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            background-color: #f0f0f0;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 0 0 15px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+        .sidebar h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #3d5a73;
+        }
+        .sidebar-button {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background-color: #34495e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+        .sidebar-button:hover {
+            background-color: #455d75;
+        }
+        .sidebar-button.active {
+            background-color: #27ae60;
+        }
+        .main-content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .poster-container {
+            position: relative;
+            height: calc(100vh - 80px);
+            border: 1px solid #ddd;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+            background-color: white;
+            max-width: 100%;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .poster-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .section-view {
+            display: none;
+            max-width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .section-view.active {
+            display: block;
+        }
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .zoom-button {
+            padding: 10px 20px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .zoom-button:hover {
+            background-color: #219653;
+        }
+        .full-poster-view {
+            position: relative;
+            width: 100%;
+        }
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 15px;
+            }
+            .sidebar h2 {
+                font-size: 1rem;
+                margin-bottom: 15px;
+            }
+            .sidebar-button {
+                padding: 10px;
+                font-size: 0.9rem;
+                margin-bottom: 8px;
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 15px;
+            }
+            .poster-container {
+                height: 70vh;
+            }
+            .controls {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Poster Navigation</h2>
+        <button class="sidebar-button active" data-section="full-poster">Full Poster</button>
+        <button class="sidebar-button" data-section="title">Title</button>
+        <button class="sidebar-button" data-section="intro">Introduction</button>
+        <button class="sidebar-button" data-section="icz">Intertropical Convergence Zone</button>
+        <button class="sidebar-button" data-section="data">Data Collection</button>
+        <button class="sidebar-button" data-section="senegal-ndvi">Senegal NDVI</button>
+        <button class="sidebar-button" data-section="drying-climate">Drying Climate</button>
+        <button class="sidebar-button" data-section="senegal-climate">Senegal Climate</button>
+        <button class="sidebar-button" data-section="medina-ndvi">Medina NDVI</button>
+        <button class="sidebar-button" data-section="irrigation">Intensive Irrigation</button>
+        <button class="sidebar-button" data-section="medina-climate">Medina Climate</button>
+    </div>
+
+    <div class="main-content">
+        <div class="poster-container">
+            <!-- Full poster view -->
+            <div class="section-view active" id="full-poster">
+                <img src="poster.jpg" alt="Full Research Poster" class="poster-image" id="full-poster-img">
+            </div>
+            
+            <!-- Section views -->
+            <div class="section-view" id="title">
+                <img src="poster.jpg" alt="Poster Title Section" class="poster-image" style="transform: scale(2); transform-origin: top left;">
+            </div>
+            
+            <div class="section-view" id="intro">
+                <img src="poster.jpg" alt="Introduction Section" class="poster-image" style="transform: scale(2); transform-origin: 20% 25%;">
+            </div>
+            
+            <div class="section-view" id="icz">
+                <img src="poster.jpg" alt="Intertropical Convergence Zone Section" class="poster-image" style="transform: scale(2); transform-origin: 50% 25%;">
+            </div>
+            
+            <div class="section-view" id="data">
+                <img src="poster.jpg" alt="Data Collection Section" class="poster-image" style="transform: scale(2); transform-origin: 80% 25%;">
+            </div>
+            
+            <div class="section-view" id="senegal-ndvi">
+                <img src="poster.jpg" alt="Senegal NDVI Section" class="poster-image" style="transform: scale(2); transform-origin: 25% 65%;">
+            </div>
+            
+            <div class="section-view" id="drying-climate">
+                <img src="poster.jpg" alt="Drying Climate Section" class="poster-image" style="transform: scale(2); transform-origin: 25% 80%;">
+            </div>
+            
+            <div class="section-view" id="senegal-climate">
+                <img src="poster.jpg" alt="Senegal Climate Section" class="poster-image" style="transform: scale(2); transform-origin: 45% 65%;">
+            </div>
+            
+            <div class="section-view" id="medina-ndvi">
+                <img src="poster.jpg" alt="Medina NDVI Section" class="poster-image" style="transform: scale(2); transform-origin: 75% 65%;">
+            </div>
+            
+            <div class="section-view" id="irrigation">
+                <img src="poster.jpg" alt="Intensive Irrigation Section" class="poster-image" style="transform: scale(2); transform-origin: 75% 80%;">
+            </div>
+            
+            <div class="section-view" id="medina-climate">
+                <img src="poster.jpg" alt="Medina Climate Section" class="poster-image" style="transform: scale(2); transform-origin: 60% 65%;">
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="zoom-button" id="zoom-in">Zoom In</button>
+            <button class="zoom-button" id="zoom-out">Zoom Out</button>
+            <button class="zoom-button" id="reset-view">Reset View</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get elements
+            const sidebarButtons = document.querySelectorAll('.sidebar-button');
+            const sectionViews = document.querySelectorAll('.section-view');
+            const zoomInButton = document.getElementById('zoom-in');
+            const zoomOutButton = document.getElementById('zoom-out');
+            const resetViewButton = document.getElementById('reset-view');
+            
+            // Current scale and position variables
+            let currentScale = 1;
+            let currentTranslateX = 0;
+            let currentTranslateY = 0;
+            let isDragging = false;
+            let startX, startY;
+            let currentSection = 'full-poster';
+            
+            // Add click event for sidebar buttons
+            sidebarButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const sectionId = this.getAttribute('data-section');
+                    
+                    // Update active button
+                    sidebarButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update active section view
+                    sectionViews.forEach(view => view.classList.remove('active'));
+                    document.getElementById(sectionId).classList.add('active');
+                    
+                    // Reset zoom and position for the new section
+                    resetView();
+                    
+                    // Update current section
+                    currentSection = sectionId;
+                });
+            });
+            
+            // Zoom in function
+            zoomInButton.addEventListener('click', function() {
+                if (currentScale < 4) {
+                    currentScale += 0.5;
+                    updateTransform();
+                }
+            });
+            
+            // Zoom out function
+            zoomOutButton.addEventListener('click', function() {
+                if (currentScale > 0.5) {
+                    currentScale -= 0.5;
+                    updateTransform();
+                }
+            });
+            
+            // Reset view function
+            resetViewButton.addEventListener('click', resetView);
+            
+            function resetView() {
+                if (currentSection === 'full-poster') {
+                    currentScale = 1;
+                } else {
+                    currentScale = 2;
+                }
+                currentTranslateX = 0;
+                currentTranslateY = 0;
+                updateTransform();
+            }
+            
+            // Update transform with current values
+            function updateTransform() {
+                const activeImage = document.querySelector('.section-view.active .poster-image');
+                if (activeImage) {
+                    activeImage.style.transform = `scale(${currentScale}) translate(${currentTranslateX}px, ${currentTranslateY}px)`;
+                }
+            }
+            
+            // Mouse down event for drag
+            document.addEventListener('mousedown', function(e) {
+                const posterContainer = document.querySelector('.poster-container');
+                if (posterContainer.contains(e.target)) {
+                    isDragging = true;
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    e.preventDefault();
+                }
+            });
+            
+            // Mouse move event for drag
+            document.addEventListener('mousemove', function(e) {
+                if (isDragging) {
+                    const deltaX = (e.clientX - startX) / currentScale;
+                    const deltaY = (e.clientY - startY) / currentScale;
+                    
+                    currentTranslateX += deltaX;
+                    currentTranslateY += deltaY;
+                    
+                    updateTransform();
+                    
+                    startX = e.clientX;
+                    startY = e.clientY;
+                }
+            });
+            
+            // Mouse up event to end drag
+            document.addEventListener('mouseup', function() {
+                isDragging = false;
+            });
+            
+            // Mouse leave event to end drag
+            document.addEventListener('mouseleave', function() {
+                isDragging = false;
+            });
+            
+            // Touch events for mobile support
+            document.addEventListener('touchstart', function(e) {
+                const posterContainer = document.querySelector('.poster-container');
+                if (posterContainer.contains(e.target)) {
+                    isDragging = true;
+                    startX = e.touches[0].clientX;
+                    startY = e.touches[0].clientY;
+                }
+            });
+            
+            document.addEventListener('touchmove', function(e) {
+                if (isDragging) {
+                    const deltaX = (e.touches[0].clientX - startX) / currentScale;
+                    const deltaY = (e.touches[0].clientY - startY) / currentScale;
+                    
+                    currentTranslateX += deltaX;
+                    currentTranslateY += deltaY;
+                    
+                    updateTransform();
+                    
+                    startX = e.touches[0].clientX;
+                    startY = e.touches[0].clientY;
+                    e.preventDefault();
+                }
+            });
+            
+            document.addEventListener('touchend', function() {
+                isDragging = false;
+            });
+        });
+    </script>
+</body>
+</html>
